@@ -1,0 +1,22 @@
+{
+  "name": "practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pretty": "prettier --write '**/*.js'",
+    "test": "jest --coverage"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-plugin-transform-builtin-extend": "^1.1.2",
+    "jest": "^23.6.0",
+    "prettier": "1.16.1"
+  },
+  "dependencies": {
+    "@types/jest": "^23.3.13",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0"
+  }
+}
