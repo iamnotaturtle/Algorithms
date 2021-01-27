@@ -1,4 +1,8 @@
 # Problems from Dynamic Programming for Coding Interviews
+# Two conditions of DP:
+# Optimal substructure (problem can be solved from optimal solution to subproblems)
+# Overlapping subproblems: same problem solved more than once
+
 from typing import List
 
 def recursiveSum(n:int) -> int:
@@ -77,3 +81,30 @@ def inorder(node):
     print(node.val)
     if node.right:
         inorder(node.right)
+
+# 1.11
+# Recursion: 
+# Sort n elements
+# Just move the largest element to the end
+# Sort n - 1 elements
+def recursiveBubbleSort(arr, n):
+    if n <= 1:
+        return
+        
+    for i in range(n - 1):
+        if arr[i] > arr[i + 1]:
+            arr[i], arr[i + 1] = arr[i + 1], arr[i]
+    recursiveBubbleSort(arr, n - 1)
+    return arr
+
+print("Recursive bubble sort:", recursiveBubbleSort([7, 4, 3, 1, 8], 5))
+assert(recursiveBubbleSort([7, 4, 3, 1, 8], 5) == [1, 3, 4, 7, 8])
+
+# 1.12 mathematical table
+def printMathematicalTable(n, i = 1):
+    if i > 12:
+        return
+    print(f"{n} * {i} = {n * i}")
+    printMathematicalTable(n, i + 1)
+
+printMathematicalTable(7)
