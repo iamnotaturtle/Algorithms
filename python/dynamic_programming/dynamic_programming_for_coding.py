@@ -2,7 +2,8 @@
 # Two conditions of DP:
 # Optimal substructure (problem can be solved from optimal solution to subproblems)
 # Overlapping subproblems: same problem solved more than once
-
+# Bottom up: solve from smallest amount up
+# Top down: opposite
 from typing import List
 
 def recursiveSum(n:int) -> int:
@@ -108,3 +109,28 @@ def printMathematicalTable(n, i = 1):
     printMathematicalTable(n, i + 1)
 
 printMathematicalTable(7)
+
+# 4.2
+def nonRecursiveFib(n):
+    a, b = 0, 1
+
+    for i in range(n):
+        a, b = b, a + b
+    
+    return a
+
+print(nonRecursiveFib(20))
+
+# 4.2 Example
+cost = [[]]
+def calculcateMinCost(s: int, d: int) -> int:
+    if s == d or s == d - 1:
+        return cost[s][d]
+    
+    minCost = cost[s][d]
+    for i in range(s + 1, d):
+        minCost = min(
+            minCost, 
+            calculateMinCost(s, i) + calculcateMinCost(i, d)
+        )
+    return minCost
