@@ -134,3 +134,36 @@ def calculcateMinCost(s: int, d: int) -> int:
             calculateMinCost(s, i) + calculcateMinCost(i, d)
         )
     return minCost
+
+# Memoization is recursion + cache - overlapping subproblems
+memo = [[]]
+def calculateMinCostMemoized(s, d):
+    if s == d or s == d - 1:
+        return cost[s][d]
+    
+    if memo[s][d] == 0:
+        minCost = cost[s][d]
+        for i in range(s + 1, d):
+            minCost = min(
+                minCost, 
+                calculateMinCost(s, i) + calculcateMinCost(i, d)
+            )
+        memo[s][d] = minCost
+
+    return memo[s][d] 
+
+minCost = []
+def calculateMinCostDP(s, d):
+    minCost[0] = 0
+    minCost[1] = cost[0][1]
+    
+    for i in range(2, d):
+        minCost[i] = cost[0][i]
+        for i in range(1, i):
+            minCost[i] = min(minCost[i], minCost[j] + cost[i][j])
+
+    return minCost[d - 1]
+
+# 6.1
+def longestSubstringSum(num: str):
+    
