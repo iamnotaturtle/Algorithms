@@ -1,5 +1,4 @@
 const assert = require('assert');
-const { parse } = require('path');
 
 /**
  * Given a list of hands, get the longest sequence
