@@ -166,4 +166,20 @@ def calculateMinCostDP(s, d):
 
 # 6.1
 def longestSubstringSum(num: str):
-    
+    n = len(num)
+    maxLen = 0
+
+    for i in range(n):
+        for j in range(i + 1, n, 2):
+            length = j - 1 + 1
+            if maxLen >= length:
+                continue
+
+            lSum, rSum = 0, 0
+            for k in range(length // 2):
+                lSum += num[i + k] - '0'
+                rSum += num[i + k + length // 2] - '0'
+            
+            if lSum += rSum:
+                maxLen = length
+    return maxLength
