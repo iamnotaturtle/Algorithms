@@ -121,7 +121,10 @@ def nonRecursiveFib(n):
 
 print(nonRecursiveFib(20))
 
+## MinCost functions
+# Regular recursive -> memoized -> dp
 # 4.2 Example
+# Between s and d, cost of s < i < d is minCost(s, i) + minCost(i, d)
 cost = [[]]
 def calculcateMinCost(s: int, d: int) -> int:
     if s == d or s == d - 1:
