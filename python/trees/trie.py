@@ -1,6 +1,5 @@
 import json
 
-words = ['use', 'aloe', 'now', 'zoo']
 
 def getTrie(words):
     if not words:
@@ -38,4 +37,7 @@ def getWord(chars, visited, node, word):
             word += chars[i]
             return getWord(chars, visited, node, word)
 
-assert(getWords(['o', 'o', 'e', 's', 'u', 'z'], getTrie(words)) == ['use', 'zoo'])
+words = ['use', 'aloe', 'now', 'zoo']
+chars = ['o', 'o', 'e', 's', 'u', 'z']
+root = getTrie(words)
+assert(getWords(chars, root) == ['use', 'zoo'])
