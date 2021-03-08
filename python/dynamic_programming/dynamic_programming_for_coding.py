@@ -167,22 +167,138 @@ def calculateMinCostDP(s, d):
 
     return minCost[d - 1]
 
+# https://tutorialspoint.dev/data-structure/graph-data-structure/find-the-minimum-cost-to-reach-a-destination-where-every-station-is-connected-in-one-direction
+def minCost(cost):
+    n = len(cost)
+    dist = [float('Inf')] * n
+    dist[0] = 0
+
+    for i in range(n):
+        for j in range(i + 1, n):
+            if dist[j] > dist[i] + cost[i][j]:
+                dist[j] = dist[i] + cost[i][j]
+    
+    return dist[-1]
+
+INF = float('Inf')
+cost= [ [0, 15, 80, 90], 
+        [INF, 0, 40, 50], 
+        [INF, INF, 0, 70], 
+        [INF, INF, INF, 0]
+        ] 
+print("The Minimum cost to reach station ", len(cost), " is ", minCost(cost))
+
 # 6.1
-def longestSubstringSum(num: str):
+def longestSubstringUnoptimized(num):
     n = len(num)
     maxLen = 0
 
     for i in range(n):
+        # Iterate over even substring
         for j in range(i + 1, n, 2):
-            length = j - 1 + 1
-            if maxLen >= length:
+            length = j - i + 1
+            if maxLen > length:
                 continue
 
+            # Calculate sum of left and right substrings
             lSum, rSum = 0, 0
             for k in range(length // 2):
-                lSum += num[i + k] - '0'
-                rSum += num[i + k + length // 2] - '0'
-            
-            if lSum += rSum:
+                lSum += int(num[i + k])
+                rSum += int(num[i + k + length // 2])
+            if lSum == rSum:
                 maxLen = length
-    return maxLength
+    return maxLen
+
+# 6.5
+def longestSubstringDP(num):
+    n = len(num)
+    maxLen = 0
+
+    # Fill in diagonal (lower half not used)
+    s = [[0] * n for i in range(n)]
+    for i in range(n):
+        s[i][i] = int(num[i])
+    
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            k = length // 2
+            s[i][j] = s[i][j - k] + s[j - k + 1][j]
+
+            if length % 2 == 0 and s[i][j - k] == s[j - k + 1][j] and length > maxLen:
+                maxLen = length
+    return maxLen
+print("Longest substring DP", longestSubstringDP("142124"))
+
+# https://hackerranksolutionc.blogspot.com/2017/06/longest-even-length-substring-solution.html
+def longestSubstringSumOptimized(num: str):
+    n = len(num)
+    length = 0
+
+    for i in range(n - 1):
+        left, right = i, i + 1
+        leftSum, rightSum = 0, 0
+
+        while right < n and left >= 0:
+            leftSum += int(num[left])
+            rightSum += int(num[right])
+
+            if leftSum == rightSum:
+                length = max(length, right - left + 1)
+            left -= 1
+            right += 1
+
+    return length
+
+print("Longest substring", longestSubstringSumOptimized("142124"))
+
+# 7.2
+# Given binary tree, add sum of nodes in hierarchy to its value
+def sumOfNodes(node):
+    if not node or not (node.left and node.right):
+        return
+
+    sumOfNodes(node.left) if node.left else None
+    sumOfNodes(node.right) if node.right else None
+
+    # Post order traversal
+    node.val += node.left.val if node.left else 0
+    node.val += node.right.val if node.right else 0
+
+# 7.3
+# pascal's triangle
+def combination(n, m):
+    if n == 0 or m == 0 or n == m:
+        return 1
+    
+    return combination(n - 1, m) + combination(n - 1, m - 1)
+def nthRow(n):
+    row = [0] * (n + 1)
+    row[0] = 1
+
+    for i in range(n + 1):
+        for j in range(i, 0, -1):
+            row[j] += row[j - 1]
+    
+    return row
+
+print('Pascal triangle, row 5 is: ', nthRow(5))
+
+# 8.1
+def minPathSum(cost):
+    if not cost:
+        return
+
+    m, n = len(cost), len(cost[0])
+
+    for row in range(m):
+        for col in range(n):
+            if row == 0 and col > 0:
+                cost[row][col] += cost[row][col - 1]
+            elif col == 0 and row > 0:
+                cost[row][col] += cost[row - 1][col]
+            elif row > 0 and col > 0:
+                cost[row][col] += min(cost[row - 1][col], cost[row][col - 1])
+                cost[row][col] += min(cost[row - 1][col - 1], cost[row - 1][col], cost[row][col - 1]) # Q 8.1, min path sum but diagonal
+
+    return cost[m - 1][n - 1]
