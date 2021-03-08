@@ -302,3 +302,47 @@ def minPathSum(cost):
                 cost[row][col] += min(cost[row - 1][col - 1], cost[row - 1][col], cost[row][col - 1]) # Q 8.1, min path sum but diagonal
 
     return cost[m - 1][n - 1]
+
+# 8.2
+# 2 x n plot of land
+# similar to fib
+def waysToPlaceTile(n):
+    if n < 2:
+        return 0
+    if n == 1 or n == 2:
+        return n
+    
+    return waysToPlaceTile(n - 1) + waysToPlaceTile(n - 2)
+
+# 8.2 3xn plot of land
+
+# 8.3
+# 3, 5, 10 points in one move
+def waysToScore(n):
+    if n < 0:
+        return 0
+    if n == 0:
+        return 1
+    
+    return waysToScore(n - 10) + waysToScore(n - 5) + waysToScore(n - 3)
+
+print("Ways to score for total 13 is", waysToScore(13))
+
+# bottom up
+def waysToScoreOptimized(n):
+    arr = [0] * (n + 1)
+    arr[0] = 1
+
+    for i in range(1, n + 1):
+        if i - 3 >= 0:
+            arr[i] += arr[i - 3]
+        if i - 5 >= 0:
+            arr[i] += arr[i - 5]
+        if i - 10 >= 0:
+            arr[i] += arr[i - 10]
+    return arr[-1]
+    
+print("optimized", waysToScoreOptimized(13))
+
+# 8.4 kadane's
+# M(n) = max(M(n - 1) + A[n], A[n])
