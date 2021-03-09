@@ -346,3 +346,49 @@ print("optimized", waysToScoreOptimized(13))
 
 # 8.4 kadane's
 # M(n) = max(M(n - 1) + A[n], A[n])
+
+# 9.1 Edit Distance O(n^3)
+def minDistance(str1, str2):
+    if not str1:
+        return len(str2)
+    if not str2:
+        return len(str1)
+
+    if str1[0] == str2[0]:
+        return minDistance(str1[1:], str2[1:])
+
+    delete = minDistance(str1[1:], str2)
+    replace = minDistance(str2[0] + str1[1:], str2)
+    insert = minDistance(str2[0] + str1, str2)
+
+    return min(delete, replace, insert) + 1
+
+print('---Edit Distance---')
+print(minDistance('cat', 'car'))
+print(minDistance('sunday', 'saturday'))
+
+# 9.1 bottom up, O(mn)
+# Can furhter optimize by using only 1d array
+def minDistanceOptimized(str1, str2):
+    m, n = len(str1), len(str2)
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    for i in range(1, n + 1):
+        dp[0][i] = i
+    
+    for i in range(1, m + 1):
+        dp[i][0] = i
+
+    for row in range(1, m + 1):
+        for col in range(1, n + 1):
+            if str1[row - 1] == str2[col - 1]:
+                dp[row][col] = dp[row - 1][col - 1]
+            else:
+                dp[row][col] = 1 + min(dp[row - 1][col - 1], dp[row - 1][col], dp[row][col - 1])
+
+    return dp[-1][-1]
+
+print('---Edit Distance Optimized ---')
+print(minDistanceOptimized('cat', 'car'))
+print(minDistanceOptimized('sunday', 'saturday'))
+
