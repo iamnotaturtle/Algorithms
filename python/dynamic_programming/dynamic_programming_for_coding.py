@@ -414,3 +414,68 @@ def uniquePathsOptimized(m, n):
             dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
 
     return dp[-1][-1]
+
+# 9.1 variation number of paths from point to origin
+def paths(m, n):
+    if n == 0 or m == 0:
+        return 1
+    
+    return paths(m - 1, n) + paths(m, n - 1)
+
+# 9.3 String interleaving
+def isInterleaving(a, b, c):
+    if not a and not b and not c:
+        return True
+    
+    if not c:
+        return False
+    
+    if not a and not b:
+        return False
+    
+    first, second = False, False
+
+    if a and c and a[0] == c[0]:
+        first = isInterleaving(a[1:], b, c[1:])
+    
+    if b and c and b[0] == c[0]:
+        second = isInterleaving(a, b[1:], c[1:])
+
+    return first or second
+
+def isInterleavingDP(a, b, c):
+    m, n = len(a), len(b)
+
+    if m + n != len(c):
+        return False
+
+    dp = [[0] * (n + 1) for _ in range(m + 1)]
+
+    dp[0][0] = True
+    
+    for i in range(1, m + 1):
+        if a[i - 1] != c[i - 1]:
+            dp[i][0] = False
+        else:
+            dp[i][0] = dp[i - 1][0]
+
+    for i in range(1, n + 1):
+        if b[i - 1] != c[i - 1]:
+            dp[0][i] = False
+        else:
+            dp[0][i] = dp[0][i - 1]
+    
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if a[i - 1] == c[i + j - 1] and b[j - 1] != c[i + j - 1]:
+                dp[i][j] = dp[i - 1][j]
+            elif a[i - 1] != c[i + j - 1] and b[j - 1] == c[i + j - 1]:
+                dp[i][j] = dp[i][j - 1]
+            elif a[i - 1] == c[i + j - 1] and b[j - 1] == c[i + j - 1]:
+                dp[i][j] = dp[i - 1][j] or dp[i][j - 1]
+            else:
+                dp[i][j] = False
+    return dp[-1][-1]
+print('---String interleaving ---')
+print(isInterleaving('bcc', 'bbca', 'bbcbcac'))
+print(isInterleavingDP('bcc', 'bbca', 'bbcbcac'))
