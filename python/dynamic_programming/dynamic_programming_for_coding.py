@@ -479,3 +479,53 @@ def isInterleavingDP(a, b, c):
 print('---String interleaving ---')
 print(isInterleaving('bcc', 'bbca', 'bbcbcac'))
 print(isInterleavingDP('bcc', 'bbca', 'bbcbcac'))
+
+# Get all interleaving strings (m + n) Cn
+def printInterleaving(s1, s2, s):
+    if not s1 and not s2:
+        print(s)
+        return
+    if s1:
+        printInterleaving(s1[1:], s2, s1[0] + s)
+    if s2:
+        printInterleaving(s1, s2[1:], s2[0] + s)
+
+printInterleaving("AB", "CD", "")
+
+# 9.4
+def isSubsetSum(arr, x):
+    if x == 0:
+        return True
+    
+    if not arr:
+        return False
+
+    if arr[0] > x:
+        return isSubsetSum(arr[1:], x)
+    
+    return isSubsetSum(arr[1:], x) or isSubsetSum(arr[1:], x - arr[0])
+
+def isSubsetSumBottomUp(arr, x):
+    n = len(arr) + 1
+    dp = [[0] * (x + 1) for _ in range(n)]
+
+    for i in range(n):
+        dp[i][0] = True
+    for i in range(x + 1):
+        dp[0][i] = False
+    
+    dp[0][arr[0]] = True
+    dp[0][0] = True
+
+
+    for i in range(1, n):
+        for j in range(1, x + 1):
+            dp[i][j] = dp[i][j - 1]
+            if j >= arr[i - 1]:
+                dp[i][j] = dp[i][j] or dp[i - arr[j - 1]][j - 1]
+    
+    return dp[-1][-1]
+
+print('---Subsetsum---')
+print(isSubsetSum([3,2,7, 1], 6))
+print(isSubsetSumBottomUp([3,2,7, 1], 6))
